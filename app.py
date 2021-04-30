@@ -1,18 +1,18 @@
 from flask import (Flask, render_template, redirect,
                    session, url_for, request, g)
 from markupsafe import escape
-import sqlite3
 from db import get_db
 import os
 
 
 app = Flask(__name__)
+# Configure app, and displays database path
 app.config.from_mapping(
     SECRET_KEY='ultrastrongkey',
-    DATABASE=os.path.join(app.instance_path, 'schema.sql'),
+    DATABASE=os.path.join(app.instance_path, 'hw13.db')
     )
 
-
+# Initializes and gets db
 with app.app_context():
     db = get_db()
 
