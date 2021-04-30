@@ -1,4 +1,8 @@
 BEGIN TRANSACTION;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS quizzes;
+DROP TABLE IF EXISTS student_result;
+
 CREATE TABLE quizzes(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             subject TEXT NOT NULL,

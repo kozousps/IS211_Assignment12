@@ -1,17 +1,20 @@
 from flask import (Flask, render_template, redirect,
-                   session, url_for, request, g, flash)
+                   session, url_for, request, g)
 from markupsafe import escape
 import sqlite3
 from db import get_db
+import os
 
 
 app = Flask(__name__)
-app.secret_key = 'ultrastrongkey'
+app.config.from_mapping(
+    SECRET_KEY='ultrastrongkey',
+    DATABASE=os.path.join(app.instance_path, 'schema.sql'),
+    )
 
-conn = sqlite3.connect('hw13.db')
-cur = conn.cursor()
 
-db = get_db()
+with app.app_context():
+    db = get_db()
 
 
 @app.route('/')
