@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dashboard</title>
+    </head>
+    <body>
+        <h2> Dashboard</h2>
+        <br/>
+        <p>Students in Class</p>
+        <ul>
+            {% for id, first, last in students%}
+            <li>{{id, first, last}}</li>
+            {% endfor %}
+        </ul>
+        <p><a href="student/add">Add Student</a></p>
+        <br/>
+        <p>Quizzes in Class</p>
+        <ul>
+            {% for id, subject, numqs, date in quizzes%}
+            <li>{{id, subject, numqs, date}}</li>
+            {% endfor %}
+        </ul>
+        <p><a href="quiz/add">Add Quiz</a></p>
+        <p><a href="logout">Log Out</a></p>
+    </body>
+</html>
