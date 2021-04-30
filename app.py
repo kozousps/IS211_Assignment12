@@ -1,16 +1,39 @@
 from flask import (Flask, render_template, redirect,
                    session, url_for, request, g)
 from markupsafe import escape
-from db import get_db
-import os
+# from db import get_db
+# import os
+import sqlite3
 
 
 app = Flask(__name__)
+# dbhere = os.path.join(app.instance_path, 'hw13.db')
 # Configure app, and displays database path
 app.config.from_mapping(
     SECRET_KEY='ultrastrongkey',
-    DATABASE=os.path.join(app.instance_path, 'hw13.db')
+    # DATABASE=dbhere
     )
+
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect('hw13.db')
+        db.row_factory = sqlite3.Row
+    return db
+
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close
+
+
+@app.before_request
+def before_request():
+    g.db = get_db()
+
 
 # Initializes and gets db
 with app.app_context():
@@ -55,19 +78,19 @@ def dashboard():
             quizret = g.db.execute("SELECT * FROM quizzes").fetchall()
 
             students = [
-                        dict(studentid=studret[2],
-                             firstn=studret[0],
-                             last=studret[1])
+                        dict(First=r[0],
+                             Last=r[0],
+                             Studentid=r[0]) for r in studret
                         ]
-            quizzes = [
-                       dict(quizid=quizret[0],
-                            subject=quizret[1],
-                            qs=quizret[2],
-                            date=quizret[3])
-                       ]
+            # quizzes = [
+            #            dict(quizid=quizret[0],
+            #                 subject=quizret[1],
+            #                 qs=quizret[2],
+            #                 date=quizret[3])
+            #            ]
 
             return render_template('dashboard.html', students=students,
-                                   quizzes=quizzes)
+                                   quizzes=quizret)
     return redirect(url_for('index'))
 
 

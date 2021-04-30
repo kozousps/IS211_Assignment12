@@ -8,16 +8,16 @@
         <br/>
         <p>Students in Class</p>
         <ul>
-            {% for studentid, first, last in students%}
-            <li>{{studentid, first, last}}</li>
+            {% for Studentid, First, Last in students %}
+            <li>{{ Studentid, First, Last }}</li>
             {% endfor %}
         </ul>
         <p><a href="student/add">Add Student</a></p>
         <br/>
         <p>Quizzes in Class</p>
         <ul>
-            {% for quizid, subject, qs, date in quizzes%}
-            <li>{{quizid, subject, qs, date}}</li>
+            {% for Quizid, Subject, Qs, Date in quizzes %}
+            <li>{{ Quizid, Subject, Qs, Date }}</li>
             {% endfor %}
         </ul>
         <p><a href="quiz/add">Add Quiz</a></p>
