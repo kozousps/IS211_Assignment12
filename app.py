@@ -43,7 +43,9 @@ with app.app_context():
 @app.route('/')
 def index():
     if 'username' in session:
-        return 'Logged in as {}'.format(escape(session['username']))
+        return """Logged in as {}
+               <p><a href="dashboard">Dashboard</a></p>
+               """.format(escape(session['username']))
     return '''You are not logged in.
         <p><a href="login">Login</a></p>
         '''
@@ -77,11 +79,11 @@ def dashboard():
             studret = g.db.execute("SELECT * FROM students").fetchall()
             quizret = g.db.execute("SELECT * FROM quizzes").fetchall()
 
-            students = [
-                        dict(First=r[0],
-                             Last=r[0],
-                             Studentid=r[0]) for r in studret
-                        ]
+            # studlist = [
+            #             dict(First=r['firstname'],
+            #                  Last=r['lastname'],
+            #                  Studentid=r['id']) for r in studret
+            #             ]
             # quizzes = [
             #            dict(quizid=quizret[0],
             #                 subject=quizret[1],
@@ -89,15 +91,59 @@ def dashboard():
             #                 date=quizret[3])
             #            ]
 
-            return render_template('dashboard.html', students=students,
+            return render_template('dashboard.html', students=studret,
                                    quizzes=quizret)
     return redirect(url_for('index'))
 
 
-@app.route('/student/add', methods=['POST'])
+@app.route('/student/add', methods=['GET', 'POST'])
 def studentadd():
     if session['username'] == 'admin':
-        pass
+        if request.method == 'GET':
+            return render_template('studentadd.html')
+        if request.method == 'POST':
+            try:
+                addstu = (request.form["fname"], request.form['lname'])
+                g.db.execute("""INSERT INTO students (firstname, lastname)
+                             VALUES (?, ?);""", (addstu),
+                             )
+                g.db.commit()
+                return redirect(url_for('dashboard'))
+            except Exception as e:
+                print(e)
+                return render_template('studentadd.html')
+
+
+@app.route('/quiz/add', methods=['GET', 'POST'])
+def quizadd():
+    if session['username'] == 'admin':
+        if request.method == 'GET':
+            return render_template('quizadd.html')
+        if request.method == 'POST':
+            try:
+                addqui = (request.form["subject"], request.form['qs'],
+                          request.form['date'])
+                g.db.execute("""INSERT INTO quizzes (subject, qs, date)
+                             VALUES (?, ?, ?);""", (addqui),
+                             )
+                g.db.commit()
+                return redirect(url_for('dashboard'))
+            except Exception as e:
+                print(e)
+                return render_template('quizadd.html')
+
+
+@app.route('/student/<id>')
+def quizscore(id):
+    qscr = g.db.execute("""
+                        SELECT quizzes.id, student_result.grade, quizzes.date
+                        FROM students JOIN student_result ON students.id =
+                        student_result.studentid
+                        JOIN quizzes ON student_result.quizid = quizzes.id
+                        WHERE students.id = ?
+                        """, [id]).fetchall()
+
+    return render_template('studentscore.html', student_result=qscr)
 
 
 if __name__ == '__main__':

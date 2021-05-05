@@ -8,8 +8,8 @@
         <br/>
         <p>Students in Class</p>
         <ul>
-            {% for Studentid, First, Last in students %}
-            <li>{{ Studentid, First, Last }}</li>
+            {% for First, Last, Studentid in students %}
+            <li>{{ Studentid, First, Last }} <a href="student/<id>">Grades</a></li>
             {% endfor %}
         </ul>
         <p><a href="student/add">Add Student</a></p>

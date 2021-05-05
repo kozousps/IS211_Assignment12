@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Student Score</title>
+    </head>
+    <body>
+        <h2> Student Score</h2>
+        <br/>
+        <p>
+            {% if g.db['id'] == post['id'] %}
+            <ul>
+                {% for quizid, grade in student_result %}
+                <li>{{ quizid, grade }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        <p><a href="dashboard">Return to Dashboard</a></p>
+    </body>
+</html>
