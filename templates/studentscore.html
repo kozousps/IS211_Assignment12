@@ -4,16 +4,19 @@
         <title>Student Score</title>
     </head>
     <body>
-        <h2> Student Score</h2>
+        {% for post in qscr %}
+        <h2> {{ post['id'] }}'s Score</h2>
         <br/>
         <p>
-            {% if g.db['id'] == post['id'] %}
+            {% if None %}
+            No Results
+            {% endif %}
             <ul>
                 {% for quizid, grade in student_result %}
                 <li>{{ quizid, grade }}</li>
                 {% endfor %}
             </ul>
-            {% endif %}
         <p><a href="dashboard">Return to Dashboard</a></p>
+        {% endfor %}
     </body>
 </html>
