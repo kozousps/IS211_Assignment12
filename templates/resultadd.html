@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add Result</title>
+    </head>
+    <body>
+        <h2> Add Result</h2>
+        <form action='/result/add' method="post">
+            <label for "studentid"> Student ID: </label>
+            <input type="text" id="studentid" name="studentid">
+            <label for "quizid"> Quiz ID: </label>
+            <input type="number" id="quizid" name="quizid">
+            <label for "grade"> Quiz Grade: </label>
+            <input type="text" id="grade" name="grade">
+            <input type="submit" value="Add Result">
+        </form>
+        <p><a href="/dashboard">Return to Dashboard</a></p>
+    </body>
+</html>
