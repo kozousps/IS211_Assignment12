@@ -143,7 +143,28 @@ def quizscore(id):
                         WHERE students.id = ?
                         """, [id]).fetchall()
 
-    return render_template('studentscore.html', student_result=qscr)
+    return render_template('studentscore.html', qscr=qscr)
+
+
+@app.route('/result/add', methods=['GET', 'POST'])
+def resultadd():
+    if session['username'] == 'admin':
+        if request.method == 'GET':
+            return render_template('resultadd.html')
+        if request.method == 'POST':
+            try:
+                resultqui = (request.form["studentid"], request.form['quizid'],
+                             request.form['grade'])
+                g.db.execute("""
+                             INSERT INTO student_result
+                             (studentid, quizid, grade)
+                             VALUES (?, ?, ?);""", (resultqui),
+                             )
+                g.db.commit()
+                return redirect(url_for('dashboard'))
+            except Exception as e:
+                print(e)
+                return render_template('resultadd.html')
 
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@
         <p>Students in Class</p>
         <ul>
             {% for First, Last, Studentid in students %}
-            <li>{{ Studentid, First, Last }} <a href="student/<id>">Grades</a></li>
+            <li>{{ Studentid, First, Last }} <a href='student/{{Studentid}}'>Grades</a></li>
             {% endfor %}
         </ul>
         <p><a href="student/add">Add Student</a></p>
@@ -21,6 +21,7 @@
             {% endfor %}
         </ul>
         <p><a href="quiz/add">Add Quiz</a></p>
+        <p><a href="result/add">Add Result</a></p>
         <p><a href="logout">Log Out</a></p>
     </body>
 </html>
