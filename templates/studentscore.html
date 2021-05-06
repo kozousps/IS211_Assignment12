@@ -8,13 +8,13 @@
         <br/>
         <p>
             <ul>
-                {% for quizid, grade, date in qscr %}
-                    {% if quizid == null %}
-                        No Results
-                    {% else %}
+                {% if not qscr %}
+                    No Results
+                {% else %}
+                    {% for quizid, grade, date in qscr %}
                         <li>{{ quizid, grade, date }}</li>
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         <p><a href="/dashboard">Return to Dashboard</a></p>
     </body>
